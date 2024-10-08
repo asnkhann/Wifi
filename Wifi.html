@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guest Wi-Fi Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+        h2 {
+            margin-bottom: 20px;
+        }
+        input {
+            margin: 10px 0;
+            padding: 10px;
+            width: 200px;
+        }
+        button {
+            padding: 10px;
+            margin-top: 10px;
+        }
+        #otpSection {
+            display: none;
+        }
+        #message {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Guest Wi-Fi Login</h2>
+    <form id="otpForm">
+        <label for="fullName">Full Name:</label>
+        <input type="text" id="fullName" required><br>
+        <label for="mobileNumber">Mobile Number:</label>
+        <input type="text" id="mobileNumber" required><br>
+        <button type="button" onclick="sendOTP()">Send OTP</button>
+    </form>
+    <div id="otpSection">
+        <label for="otp">Enter OTP:</label>
+        <input type="text" id="otp" required>
+        <button type="button" onclick="verifyOTP()">Verify OTP</button>
+    </div>
+    <div id="message"></div>
+
+    <script>
+        let otpSent = false;
+
+        function sendOTP() {
+            const mobileNumber = document.getElementById("mobileNumber").value;
+            // Generate a random 6-digit OTP
+            const otp = Math.floor(100000 + Math.random() * 900000);
+            // Simulate sending OTP (you can replace this with actual SMS API call)
+            alert(`Your OTP is: ${otp}`); // Simulating sending OTP
+            localStorage.setItem('otp', otp); // Store OTP temporarily
+            document.getElementById("otpSection").style.display = 'block';
+            otpSent = true;
+        }
+
+        function verifyOTP() {
+            const otp = document.getElementById("otp").value;
+            const sentOtp = localStorage.getItem('otp');
+            if (otp === sentOtp) {
+                alert("OTP verified! You will have internet access for 1 hour.");
+                // Simulate allowing internet access
+                setTimeout(() => {
+                    alert("Your internet access has expired.");
+                    // Logic to disconnect user or redirect to a page (depends on router)
+                }, 3600000); // 1 hour in milliseconds
+            } else {
+                alert("Invalid OTP. Please try again.");
+            }
+        }
+    </script>
+</body>
+</html>
